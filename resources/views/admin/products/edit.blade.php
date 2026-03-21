@@ -56,14 +56,43 @@
             <x-input-error :messages="$errors->get('description')" class="mt-2" />
         </div>
 
-        <div class="mb-6">
-            <x-input-label for="image" value="Product Image" />
-            <input type="file" name="image" id="image" class="mt-1 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-sm file:font-bold file:bg-mocha-accent/10 file:text-mocha-accent hover:file:bg-mocha-accent/20 cursor-pointer">
-            @if($product->image)
-                <div class="mt-3 relative w-24 h-24 rounded-xl overflow-hidden border border-gray-100 shadow-sm">
-                    <img src="{{ Storage::url($product->image) }}" class="w-full h-full object-cover">
+        <!-- Image Upload -->
+        <div class="mb-6" x-data="imageUploader('{{ $product->image ? Storage::url($product->image) : '' }}')">
+            <x-input-label value="Product Image" />
+
+            <div class="mt-2 relative border-2 border-dashed rounded-xl transition-colors duration-200 cursor-pointer"
+                 :class="preview ? 'border-mocha-accent/40 bg-mocha-accent/5' : 'border-gray-200 hover:border-mocha-accent/40 bg-gray-50'"
+                 @click="$refs.fileInput.click()"
+                 @dragover.prevent="dragging = true"
+                 @dragleave.prevent="dragging = false"
+                 @drop.prevent="onDrop($event)">
+
+                <!-- Empty state -->
+                <div x-show="!preview" class="py-10 flex flex-col items-center justify-center text-center px-4">
+                    <svg class="h-10 w-10 text-gray-300 mb-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                    </svg>
+                    <p class="text-sm font-medium text-gray-600">Click or drag & drop to upload a new image</p>
+                    <p class="text-xs text-gray-400 mt-1">JPG, PNG, GIF up to 20MB</p>
                 </div>
-            @endif
+
+                <!-- Preview -->
+                <div x-show="preview" class="relative p-4 flex items-center gap-4">
+                    <img :src="preview" class="h-24 w-24 object-contain rounded-lg border border-gray-100 bg-white shadow-sm">
+                    <div class="flex-1 min-w-0">
+                        <p class="text-sm font-semibold text-gray-700 truncate" x-text="fileName || 'Current image'"></p>
+                        <p class="text-xs text-gray-400 mt-0.5" x-text="fileSize || 'Saved image'"></p>
+                        <button type="button" @click.stop="clearImage()" class="mt-2 text-xs text-red-500 hover:text-red-600 font-medium flex items-center gap-1">
+                            <svg class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                            Remove image
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <input type="file" name="image" id="image" accept="image/*" class="hidden" x-ref="fileInput" @change="onFileChange($event)">
+            <!-- Hidden flag to signal image removal -->
+            <input type="hidden" name="remove_image" x-ref="removeFlag" value="0">
             <x-input-error :messages="$errors->get('image')" class="mt-2" />
         </div>
 
@@ -74,4 +103,43 @@
         </div>
     </form>
 </div>
+
+<script>
+function imageUploader(currentImage) {
+    return {
+        preview: currentImage || null,
+        fileName: '',
+        fileSize: '',
+        dragging: false,
+        onFileChange(event) {
+            const file = event.target.files[0];
+            if (file) this.loadFile(file);
+            this.$refs.removeFlag.value = '0';
+        },
+        onDrop(event) {
+            this.dragging = false;
+            const file = event.dataTransfer.files[0];
+            if (file && file.type.startsWith('image/')) {
+                this.$refs.fileInput.files = event.dataTransfer.files;
+                this.loadFile(file);
+                this.$refs.removeFlag.value = '0';
+            }
+        },
+        loadFile(file) {
+            this.fileName = file.name;
+            this.fileSize = (file.size / 1024 / 1024).toFixed(2) + ' MB';
+            const reader = new FileReader();
+            reader.onload = (e) => { this.preview = e.target.result; };
+            reader.readAsDataURL(file);
+        },
+        clearImage() {
+            this.preview = null;
+            this.fileName = '';
+            this.fileSize = '';
+            this.$refs.fileInput.value = '';
+            this.$refs.removeFlag.value = '1';
+        }
+    }
+}
+</script>
 @endsection

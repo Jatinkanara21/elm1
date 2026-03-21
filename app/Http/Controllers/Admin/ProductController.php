@@ -65,11 +65,19 @@ class ProductController extends Controller
             "image" => "nullable|image|mimes:jpeg,png,jpg,gif|max:20480"
         ]);
 
-        $data = $request->except("image");
+        $data = $request->except(["image", "remove_image"]);
         $data["slug"] = Str::slug($request->name);
 
         if ($request->hasFile("image")) {
+            if ($product->image) {
+                \Illuminate\Support\Facades\Storage::disk("public")->delete($product->image);
+            }
             $data["image"] = $request->file("image")->store("products", "public");
+        } elseif ($request->input("remove_image") === "1") {
+            if ($product->image) {
+                \Illuminate\Support\Facades\Storage::disk("public")->delete($product->image);
+            }
+            $data["image"] = null;
         }
 
         $oldStock = $product->stock;
