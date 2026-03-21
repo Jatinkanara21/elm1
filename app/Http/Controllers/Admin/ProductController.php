@@ -27,7 +27,7 @@ class ProductController extends Controller
             "category_id" => "required|exists:categories,id",
             "price" => "required|numeric",
             "stock" => "required|integer",
-            "image" => "nullable|image|mimes:jpeg,png,jpg,gif|max:2048",
+            "image" => "nullable|image|mimes:jpeg,png,jpg,gif|max:20480",
             "brand" => "nullable|string"
         ]);
 
@@ -62,7 +62,7 @@ class ProductController extends Controller
             "category_id" => "required|exists:categories,id",
             "price" => "required|numeric",
             "stock" => "required|integer",
-            "image" => "nullable|image|mimes:jpeg,png,jpg,gif|max:2048"
+            "image" => "nullable|image|mimes:jpeg,png,jpg,gif|max:20480"
         ]);
 
         $data = $request->except("image");
