@@ -9,6 +9,10 @@ export default {
         './resources/views/**/*.blade.php',
         './resources/js/**/*.jsx', // if using react, not used here
     ],
+    
+    safelist: [
+        // Add commonly used dynamic classes here to prevent removal
+    ],
 
     theme: {
         extend: {
@@ -28,8 +32,20 @@ export default {
                 sans: ['Outfit', ...defaultTheme.fontFamily.sans],
                 serif: ['Playfair Display', ...defaultTheme.fontFamily.serif],
             },
+            animation: {
+                'fade-in': 'fadeIn 0.3s ease-in',
+            },
+            keyframes: {
+                fadeIn: {
+                    '0%': { opacity: '0' },
+                    '100%': { opacity: '1' },
+                },
+            },
         },
     },
 
     plugins: [forms],
+    corePlugins: {
+        // Disable unused core plugins to reduce CSS
+    },
 };

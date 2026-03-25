@@ -56,7 +56,7 @@
                         <div class="group glassmorphism rounded-xl overflow-hidden hover:shadow-2xl transition-all duration-300 border border-gray-100 flex flex-col h-full bg-white">
                             <div class="relative h-56 bg-gray-50 p-4 flex justify-center items-center overflow-hidden border-b border-gray-100">
                                 @if($product->image)
-                                    <img src="{{ Storage::url($product->image) }}" alt="{{ $product->name }}" class="h-full object-contain group-hover:scale-110 transition-transform duration-500 drop-shadow-md">
+                                    <img src="{{ Storage::url($product->image) }}" alt="{{ $product->name }}" loading="lazy" decoding="async" class="h-full object-contain group-hover:scale-110 transition-transform duration-500 drop-shadow-md">
                                 @else
                                     <div class="w-16 h-32 bg-mocha-accent/10 rounded-t-full rounded-b border border-mocha-accent/30 flex items-center justify-center"></div>
                                 @endif

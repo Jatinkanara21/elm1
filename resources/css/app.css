@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,400&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -7,14 +7,17 @@
 @layer base {
   body {
     @apply bg-mocha-light text-mocha-text font-sans antialiased;
+    font-display: swap;
   }
   h1, h2, h3, h4, h5, h6 {
     @apply font-serif;
+    font-display: swap;
   }
 }
 
 @layer utilities {
     .glassmorphism {
         @apply bg-white/80 backdrop-blur-md border border-black/5 shadow-md;
+        will-change: auto;
     }
 }
