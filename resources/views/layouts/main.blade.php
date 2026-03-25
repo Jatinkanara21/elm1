@@ -2,13 +2,14 @@
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
     <meta name="csrf-token" content="{{ csrf_token() }}">
+    <meta name="description" content="Premium fine wines, spirits, and craft beers at Elm Grove Liquor Store">
+    <meta name="theme-color" content="#8B4513">
 
     <title>{{ config('app.name', 'Elm Grove Liquor') }} - @yield('title', 'Premium Liquor Store')</title>
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
-    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
 </head>
 <body class="bg-mocha-light text-mocha-text font-sans antialiased flex flex-col min-h-screen pb-20 sm:pb-0">
     <x-age-gate />
@@ -40,7 +41,7 @@
                         <div x-data="{ dropdownOpen: false }" class="relative">
                             <button @click="dropdownOpen = !dropdownOpen" class="flex items-center space-x-2 text-gray-600 hover:text-mocha-accent focus:outline-none">
                                 @if(auth()->user()->avatar)
-                                    <img src="{{ auth()->user()->avatar }}" class="w-8 h-8 rounded-full border border-mocha-accent" alt="Avatar">
+                                    <img src="{{ auth()->user()->avatar }}" loading="lazy" decoding="async" class="w-8 h-8 rounded-full border border-mocha-accent" alt="User Avatar">
                                 @else
                                     <div class="w-8 h-8 rounded-full bg-mocha-accent text-white flex items-center justify-center text-sm font-bold">{{ substr(auth()->user()->name, 0, 1) }}</div>
                                 @endif
@@ -145,7 +146,7 @@
                 <div>
                     <h3 class="text-sm font-bold text-white uppercase tracking-wider">Location</h3>
                     <div class="mt-4 rounded-xl overflow-hidden border border-white/5 h-36">
-                        <iframe class="w-full h-full" src="https://maps.google.com/maps?q=7433%20N%20Lindbergh%20Blvd,%20Hazelwood,%20MO%2063042&t=&z=14&ie=UTF8&iwloc=&output=embed" frameborder="0" scrolling="no" marginheight="0" marginwidth="0"></iframe>
+                        <iframe class="w-full h-full" src="https://maps.google.com/maps?q=7433%20N%20Lindbergh%20Blvd,%20Hazelwood,%20MO%2063042&t=&z=14&ie=UTF8&iwloc=&output=embed" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" loading="lazy" title="Elm Grove Liquor Store Location"></iframe>
                     </div>
                 </div>
             </div>

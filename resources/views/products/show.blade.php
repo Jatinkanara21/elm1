@@ -35,7 +35,7 @@
             <!-- Product Image -->
             <div class="flex justify-center items-center bg-gray-50 rounded-xl p-8 min-h-[400px] border border-gray-100">
                 @if($product->image)
-                    <img src="{{ Storage::url($product->image) }}" alt="{{ $product->name }}" class="max-h-96 object-contain drop-shadow-md">
+                    <img src="{{ Storage::url($product->image) }}" alt="{{ $product->name }}" loading="eager" decoding="async" class="max-h-96 object-contain drop-shadow-md">
                 @else
                     <div class="w-32 h-64 bg-mocha-accent/10 rounded-t-full rounded-b-lg border-2 border-mocha-accent/30 flex items-center justify-center">
                         <span class="text-mocha-accent/50 text-sm font-serif rotate-90">{{ $product->category->name ?? 'BOTTLE' }}</span>
